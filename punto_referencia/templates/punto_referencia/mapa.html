@@ -1,0 +1,82 @@
+{% load static %}
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+        <!-- favicon --> 
+        <link rel="shortcut icon" href="{% static 'favicon.ico' %}" />
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+        <!-- Font Awsome-->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <!-- semantic UI -->
+        <link rel="stylesheet" type='text/css' href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.14/semantic.min.css">
+        <!--Chart js-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" integrity="sha256-Uv9BNBucvCPipKQ2NS9wYpJmi8DTOEfTA/nH2aoJALw=" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.css" integrity="sha256-aa0xaJgmK/X74WM224KMQeNQC2xYKwlAt08oZqjeF0E=" crossorigin="anonymous" />
+        <!-- jQuery -->
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    
+        <!-- Dropzone js -->
+        {% comment %} <link rel="stylesheet" href="{% static 'dropzone.css' %}">
+        <script src="{% static 'dropzone.js' %}" defer></script> {% endcomment %}
+        <script src="https://unpkg.com/dropzone@6.0.0-beta.1/dist/dropzone-min.js" defer></script>
+        <link href="https://unpkg.com/dropzone@6.0.0-beta.1/dist/dropzone.css" rel="stylesheet" type="text/css" />
+    
+        <!-- Custom js & css -->
+        <link rel="stylesheet" href="{% static 'style.css' %}">
+    
+        <title>SIGAGRO | Mapa</title>
+      </head>
+    
+    <body>
+    {% include 'navbar.html' %}
+    <div class="map">
+        <div class="col-sm-10 mapitem">{{map|safe}}</div>
+        <div class="col-sm-2 mapitem">
+            <div class="labels">
+                <h4 class="alert-heading headers" style="text-align: center;">Municipios</h4>
+                <hr>
+                    {% for key,value in municipios.items %}
+                        <p><i class="fa fa-map-marker" style="color:{{value}};"></i>{{key}}
+                        </p>                                                
+                    {% endfor %}                    
+            </div>
+        </div>
+    </div>    
+    
+    <footer class="container-fluid text-center">
+        <div class="row">
+            <div class="col-sm-4">
+                <h3>Contáctenos</h3>    
+                <hr>
+                <h4>Teléfono: 3112813845</h4>
+                <h4>Bucaramanga - Colombia</h4>
+                <h4>Cra. 27 # 9</h4>
+                
+            </div>
+            <div class="col-sm-5">
+                <h3>Redes Sociales</h3>
+                <br>
+                <a href="#" id="fa" class="fa fa-facebook"></a>
+                <a href="#" id="fa" class="fa fa-twitter"></a>
+                <a href="#" id="fa" class="fa fa-linkedin"></a>
+                <a href="#" id="fa" class="fa fa-youtube"></a>
+            </div>
+            <div class="col-sm-3">
+                <img src="{% static 'logo.png' %}" class="img-fluid" style="border-radius: 55%; height: 190px;">
+            </div>
+        </div>
+    </footer>
+    </body>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.min.js"></script>
+</html> 
+
+
+    

@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% url 'punto_referencia:export' as export %}
+
+
+{% block title %}Reportes Clima{% endblock title %}
+{% block styles %}
+<link rel="stylesheet" href="{% static 'municipios/style.css' %}">
+{% endblock styles %}
+{% block content %}
+<br>
+
+<h1 class="headers" style="text-align:center;">Reportes Clima</h1>
+<hr/>
+<div class="bloque">    
+    <form action="" id="dataForm" class="" method="POST">
+        {% csrf_token %}
+        {{form|crispy}}
+        <button type="submit" class="btn btn-primary mt-3">Consultar</button>
+    </form>
+</div>
+    <br>        
+    {% if obj %}
+        <h3 class="headers">Boletín informativo del punto de referencia {{punto_referencia.name}} perteneciente al municipio 
+            {{punto_referencia.municipio.name}}  </h3>
+            <h4 class="headers">Datos históricos entre {{date_from}} y {{date_to}}</h4>
+        <hr/>
+            <a href={% url 'punto_referencia:export' %} class="btn btn-success mt-3 mb-3">Exportar como CSV</a>            
+            <table class="text-center table table-hover table-striped table-bordered mt-3">
+                <thead>
+                <tr >
+                    <th scope="col">Fecha</th>
+                    <th scope="col">Radiación Solar</th>
+                    <th scope="col">Temperatura</th>
+                    <th scope="col">Precipitación</th>
+                    <th scope="col">Humedad Relativa</th>
+                    <th scope="col">Punto de Referencia</th>
+                    <th scope="col">Municipio</th>
+                </tr>
+                </thead>
+                <tbody> 
+                    {% for o in obj %}                
+                        <tr>
+                            <th scope="row">{{o.year}}</th>
+                            <td class="table-warning">{{o.irradiance}}</td>
+                            <td class="table-success">{{o.temperature}}</td>
+                            <td class="table-primary">{{o.precipitation}}</td>
+                            <td class="table-info">{{o.relative_humidity}}</td>
+                            <td class="table-light">{{o.punto_referencia.name}}</td>
+                            <td class="">{{o.punto_referencia.municipio.name}}</td>
+                        </tr>   
+                    {% endfor %}            
+                </tbody>
+            </table>
+            <p>10 primeros resultados de {{cantidad}}</p>
+            <br/>
+            <hr/>
+    {% endif %}        
+    {% if no_data %}
+        <div class="alert alert-danger" role="alert">
+            {{no_data}}
+        </div>      
+    {% endif %}
+
+{% endblock content %}
+

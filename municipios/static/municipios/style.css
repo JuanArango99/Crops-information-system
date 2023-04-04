@@ -1,0 +1,97 @@
+.details{
+    position: relative;
+    width: 100%;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    grid-gap: 30px;
+    margin-top: 10px;
+}
+
+.details .detailsInside{
+    position: relative;
+    width: 100%;
+    display: grid;
+    min-height: 300px;
+    padding: 20px;
+    box-shadow: 0 7px 25px rgba(17, 151, 77, 0.3);
+    border-radius: 20px;
+}
+
+.cardHeader{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom:25px;
+}
+
+.graphs{
+    position: relative;
+    width: 100%;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 400px;
+    grid-gap: 30px
+}
+
+.graphs .box{
+    align-self: center;
+    position: relative;
+    background-color: rgb(255, 255, 255);
+    padding: 20px;
+    width: 100%;    
+    box-shadow: 0 7px 10px rgba(9, 131, 230, 0.219);
+    border-radius: 20px;
+}
+
+.cardBox2{
+    position: relative;
+    width: 100%;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    grid-gap: 30px;
+}
+
+.cardBox2 .card{
+    text-align: center;
+    position: relative;
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    display: flex;
+    justify-content: space-between;    
+    box-shadow: 0 7px 15px rgba(49, 2, 180, 0.5);
+}
+
+.cardBox2 .card .numbers{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    position: relative;
+    font-weight: 500;
+    font-size: 1.5em;
+    color: rgb(37, 182, 18);    
+    margin-top: 15px;
+}
+
+.cardBox2 .card .cardName{
+    font-weight: 600;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: rgba(102, 102, 109, 0.884);
+    font-size: 1em;    
+    
+}
+
+.bloque{
+    margin: 20px;
+    padding: 15px;
+    text-align: -webkit-center;
+    
+}
+
+#dataForm{
+    width: 30%;
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    padding: 20px;
+}

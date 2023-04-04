@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block scripts %}
+    <script src="{% static 'municipios/upload.js' %}" defer></script>
+{% endblock scripts %}
+
+{% block title %}Maiz{% endblock title %}
+
+{% block content %} 
+<h1 class="headers">Módulo Maíz</h1>
+<hr><br>
+<br>
+<div class="row align-items-center">
+    <div class="col-6">
+        <div id="alert-box2"></div>
+        <form id="my-dropzone2" class="dropzone dz">
+            {% csrf_token %}
+            <div class="dz-message needsclick">
+                <!--begin::Icon-->
+                <i class="fa fa-cloud-upload fa-5x" aria-hidden="true"></i>
+                <!--end::Icon-->
+                <br>
+                <br>
+                <!--begin::Info-->
+                <div class="ms-4">
+                    <h3 class="headers">Arrastra o Selecciona el archivo de carga.</h3>
+                    <span class="fs-7 fw-semibold text-gray-400">Máximo 1 archivo en CSV.</span>
+                </div>
+                <div class="fallback">
+                    <input name="file" type="file" /> 
+                </div>
+                <!--end::Info-->
+            </div>
+        </form>
+    </div>
+
+    <div class="col-6 text-center">
+        <h4>Este módulo se encarga de almacenar los datos correspondientes
+            al maíz.
+        </h4><br>
+        <div class="alert alert-warning" role="alert">
+            <h4 class="alert-heading">Al momento de cargar un archivo tener en cuenta:</h4>
+            <hr>
+            <p>Cargar un único archivo a la vez.</p>          
+            <p>Sólo se admiten archivos en formato .csv.</p>        
+        </div>
+    </div>
+
+    
+</div>
+
+<button id="upload-btn" type="submit" class="btn btn-success m-3">Guardar</button>
+
+{% endblock content %}

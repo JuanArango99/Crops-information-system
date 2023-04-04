@@ -1,0 +1,324 @@
+{% load static %}
+{% load crispy_forms_tags %}
+
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- favicon --> 
+    <link rel="shortcut icon" href="{% static 'favicon.ico' %}" />
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <!-- Font Awsome-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- semantic UI -->
+    <link rel="stylesheet" type='text/css' href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.14/semantic.min.css">
+    <!--Chart js-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" integrity="sha256-Uv9BNBucvCPipKQ2NS9wYpJmi8DTOEfTA/nH2aoJALw=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.css" integrity="sha256-aa0xaJgmK/X74WM224KMQeNQC2xYKwlAt08oZqjeF0E=" crossorigin="anonymous" />
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+    <script src="https://unpkg.com/dropzone@6.0.0-beta.1/dist/dropzone-min.js" defer></script>
+    <link href="https://unpkg.com/dropzone@6.0.0-beta.1/dist/dropzone.css" rel="stylesheet" type="text/css" />
+
+    <!-- Custom js & css -->
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link rel="stylesheet" href="{% static 'municipios/style.css' %}">
+
+    
+    <title>SIGAGRO | Graficos Clima</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js"></script>
+    <script>
+        $(document).ready(function(){
+                    
+            if ($("#id_punto_referencia").val() != '') {
+                $("#submitButton").prop("disabled",false);
+            }else{
+                $("#submitButton").prop("disabled",true);
+            }
+    
+            $("#id_municipio").change(function () {
+                if ($(this).val() == '') {
+                    $("#submitButton").prop("disabled",true);
+                }
+                if ($("#id_punto_referencia").val() == '') {
+                    $("#submitButton").prop("disabled",true);
+                }
+                var url = $("#dataForm").attr("data-cities-url");  // get the url of the `load_cities` view
+                var municipioId = $(this).val();  // get the selected country ID from the HTML input
+                $.ajax({                       // initialize an AJAX request
+                        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+                        data: {
+                        'municipio': municipioId       // add the country id to the GET parameters
+                        },
+                        success: function (data) {   // `data` is the return of the `load_cities` view function
+                            $("#submitButton").prop("disabled",true);
+                            $("#id_punto_referencia").html(data);  // replace the contents of the city input with the data that came from the server
+                        }
+                    });
+                });
+                $("#id_punto_referencia").change(function () {                
+                    if ($(this).val() != '') {
+                        $("#submitButton").prop("disabled",false);
+                    }else{
+                        $("#submitButton").prop("disabled",true);
+                    }
+                });
+    
+    
+            });
+    
+      </script>
+    <script>
+        $(document).ready(function(){
+            const ctx = document.getElementById('myChart').getContext('2d');
+            const ctx2 = document.getElementById('myChart2').getContext('2d');
+            const ctx3 = document.getElementById('myChart3').getContext('2d');
+            
+        
+            const myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: [
+                    {% if periodoLargo %} {% for item in fechas %}'{{item}}',{% endfor %}
+                    {% else %}
+                    {% for item in qs %}'{{item.year}}',{% endfor %} 
+                    {% endif %}
+                    ],
+                    datasets: [{
+                        label: '{{variableName}}'+
+                        {% if periodoLargo and variableName != "Precipitación" %}
+                        ' promedio mensual'
+                        {% elif periodoLargo and variableName == "Precipitación" %}
+                        ' mensual'
+                        {% else %}' promedio diario '
+                        {% endif %},
+                        data: {% if periodoLargo %}{{datos}}{% else %}{{data}}{% endif %},
+                        backgroundColor: 'rgba(0, 154, 64, 0.2)',
+                        borderColor: 'rgba(100, 99, 132, 1)',
+                        borderWidth: 0.9,
+                        radius:{% if periodoLargo %} 2 {% else %} 0.2 {% endif %},
+                        lineTension:0,
+                    }]                 
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });           
+            const myChart2 = new Chart(ctx2, {
+                type: 'bar',
+                data: {
+                    labels: [{% for item in fechas %}'{{item}}',{% endfor %}],
+                    datasets: [{                    
+                        data: {{datos}} ,
+                        backgroundColor: 'rgba(79,142,204, 0.6)',
+                        borderColor: 'rgba(200, 200, 200, 0.75)',
+                        hoverBorderColor: 'rgba(200, 200, 200, 1)',
+                        borderWidth: 1,
+                        order:1                        
+                    },
+                    {% if periodoLargo == False %}
+                    {                    
+                        data: {{datos}} ,
+                        backgroundColor: 'blue',
+                        borderColor: 'yellow',                            
+                        borderWidth:2,
+                        type:'line',
+                        order:0,
+                        fill:false,
+                        lineTension:0,                        
+                    }{% endif %}]
+                },
+                options: {
+                    legend:{
+                        display:false
+                    },
+                    title:{
+                        display:true,
+                        text:'{{variableName}} {% if variableName != "Precipitación" %}promedio {% endif %}mensual',
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+            const myChart3 = new Chart(ctx3, {
+                type: 'line',
+                data: {
+                    labels: [{% for item in yDatosFechas %}'{{item}}',{% endfor %}],
+                    datasets: [{
+                        label: 'Precipitación anual',
+                        data: {{yDatosPrec}},
+                        backgroundColor: 'rgba(0, 154, 64, 0.2)',
+                        borderColor: 'rgba(100, 99, 132, 1)',
+                        borderWidth: 0.9,
+                        radius:2,
+                        lineTension:0,
+                    }]                 
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });  
+        });
+    </script>
+    <script>
+        // Exportar a PDF
+        $(document).ready(function(){
+        $('#downloadPdf').click(function(event) {
+            // get size of report page
+            var reportPageHeight = $('#graphs').innerHeight();
+            var reportPageWidth = $('#graphs').innerWidth();
+          
+            // create a new canvas object that we will populate with all other canvas objects
+            var pdfCanvas = $('<canvas />').attr({
+              id: "canvaspdf",
+              width: reportPageWidth + 300,
+              height: reportPageHeight + 190
+            });
+          
+            // keep track canvas position
+            var pdfctx = $(pdfCanvas)[0].getContext('2d');
+            var pdfctxX = 0;
+            var pdfctxY = 0;
+            var buffer = 90;
+          
+            // for each chart.js chart
+            $("canvas").each(function(index) {
+              // get the chart height/width
+              var canvasHeight = $(this).innerHeight();
+              var canvasWidth = $(this).innerWidth();
+          
+              // draw the chart into the new canvas
+              pdfctx.drawImage($(this)[0], pdfctxX, pdfctxY, canvasWidth + 270, canvasHeight);
+              pdfctxY += canvasHeight + buffer;
+              
+            });
+          
+            // create new pdf and add our new canvas as an image
+            var pdf = new jsPDF('p', 'pt', [reportPageWidth, reportPageHeight]);
+            pdf.setFont("helvetica");
+            pdf.setFontType("bold");
+            pdf.setFontSize(18);
+            pdf.setTextColor(26, 82, 118);
+            pdf.text(reportPageWidth/2,50, 'Reporte climático: {{variableName|title}}','center');
+            pdf.setTextColor(20, 90, 50);
+            pdf.text(reportPageWidth/2,80, 'Municipio: {{punto_referenciaObj.municipio.name|title}}','center');
+            pdf.setTextColor(30, 152, 53);
+            pdf.text(reportPageWidth/2,112, 'Punto de referencia: {{punto_referenciaObj.name|title}} ({{punto_referenciaObj.longitud}},{{punto_referenciaObj.latitud}})','center');            
+            pdf.text(reportPageWidth/2,140, '{{desde}} - {{hasta}}','center');            
+            
+            pdf.addImage($(pdfCanvas)[0], 'PNG', 50, 170);
+            // download the pdf
+            pdf.save('Gráficos clima - {{punto_referenciaObj.name|title}} ({{punto_referenciaObj.municipio.name|title}})'+'.pdf');
+          });
+        });
+    </script>
+</head>
+<body>
+{% include 'navbar.html' %}
+<div class="bloque">    
+    <h1 class="headers">Panel de Control: Clima</h1>
+    <hr/>
+    <br/>    
+    <form method="POST" id="dataForm" data-cities-url="{% url 'punto_referencia:ajax_load_cities' %}" >
+        {% csrf_token %}    
+        {{punto_referenciaForm|crispy}}
+        {{datoForm|crispy}}
+        {{form |crispy}}
+        <button id="submitButton" type="submit" class="btn btn-primary mt-3">Buscar</button>
+    </form>
+    {% if qs %}    
+        <!-- Cards -->
+        <div class="cardBox">
+            <div class="card">
+                <div class="numbers">{{punto_referenciaObj.municipio.name|title}}</div>
+                <div class="cardName">Municipio</div>           
+            </div>        
+            <div class="card">
+                <div class="numbers">{{punto_referenciaObj|title}}</div>
+                <div class="cardName">Punto de Referencia</div>           
+            </div>        
+            <div class="card">
+                <div class="numbers">{{minimo}}</div>
+                <div class="cardName">Minimo ({{unidades}}) </div>           
+            </div>        
+            <div class="card">
+                <div class="numbers">{{maximo}} </div>
+                <div class="cardName">Maximo ({{unidades}})</div>           
+            </div>        
+            {% if variableName != "Precipitación" %}
+            <div class="card">
+                <div class="numbers">{{promedio}} </div>
+                <div class="cardName">Promedio ({{unidades}})</div>           
+            </div>                    
+            {% endif %}
+            
+        </div>
+        <div class="d-flex justify-content-end">
+            <a href="#" class="btn btn-outline-secondary btn-lg my-4" id="downloadPdf">
+                <i class="fa fa-download me-2" aria-hidden="true"></i>
+            Exportar como PDF</a>
+        </div>
+        <!-- Charts -->
+        <div id="graphs">
+            <div class="box"><canvas id="myChart"></canvas></div>
+            <div class="box"><canvas id="myChart2"></canvas></div>            
+            <div class="box"><canvas id="myChart3"></canvas></div>            
+        </div>
+    {% else %}
+        <div class="alert alert-info mt-3" role="alert">
+            No hay datos para mostrar. Seleccione un rango de tiempo adecuado.
+        </div>
+    {% endif %}
+</div>
+<footer class="container-fluid text-center">
+    <div class="row">
+        <div class="col-sm-4">
+            <h3>Contáctenos</h3>    
+            <hr>
+            <h4>Teléfono: 3112813845</h4>
+            <h4>Bucaramanga - Colombia</h4>
+            <h4>Cra. 27 # 9</h4>
+            
+        </div>
+        <div class="col-sm-5">
+            <h3>Redes Sociales</h3>
+            <br>
+            <a href="#" id="fa" class="fa fa-facebook"></a>
+            <a href="#" id="fa" class="fa fa-twitter"></a>
+            <a href="#" id="fa" class="fa fa-linkedin"></a>
+            <a href="#" id="fa" class="fa fa-youtube"></a>
+        </div>
+        <div class="col-sm-3">
+            <img src="{% static 'logo.png' %}" class="img-fluid" style="border-radius: 55%; height: 190px;">
+        </div>
+    </div>
+</footer>
+</body>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.min.js"></script>
+</html>
+
+
+
+    
+    

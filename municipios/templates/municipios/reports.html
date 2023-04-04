@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% url 'municipios:export' as export %}
+
+
+{% block title %}Reportes Cultivos{% endblock title %}
+{% block styles %}
+<link rel="stylesheet" href="{% static 'municipios/style.css' %}">
+{% endblock styles %}
+{% block content %}
+<br/>
+<h1 class="headers">Reportes Cultivo Maíz</h1>
+<hr/>
+<br/>
+<div class="bloque">    
+    <form action="" id="dataForm" method="POST">
+        {% csrf_token %}
+        {{form|crispy}}
+        <button type="submit" class="btn btn-primary mt-3">Consultar</button>
+    </form>
+</div>
+    <br>        
+    {% if obj %}
+        <h3 class="headers">Boletín informativo del municipio {{municipio.name}} </h3>
+            <h4 class="headers">Datos históricos entre {{date_from}} y {{date_to}}</h4>
+        <hr/>
+            <a href={% url 'municipios:export' %} class="btn btn-success mt-3 mb-3">Exportar como CSV</a>            
+            <table class="text-center table table-hover table-striped table-bordered mt-3">
+                <thead>
+                <tr >
+                    <th scope="col">Fecha</th>
+                    <th scope="col">Periodo</th>
+                    <th scope="col">Area Sembrada</th>
+                    <th scope="col">Area Cosechada</th>
+                    <th scope="col">Produccion</th>
+                    <th scope="col">Rendimiento</th>
+                    <th scope="col">Municipio</th>
+                </tr>
+                </thead>
+                <tbody> 
+                    {% for o in obj %}                
+                        <tr>
+                            <th scope="row">{{o.year}}</th>
+                            <td class="table-warning">{{o.period}}</td>
+                            <td class="table-success">{{o.area_sembrada}}</td>
+                            <td class="table-primary">{{o.area_cosechada}}</td>
+                            <td class="table-info">{{o.produccion}}</td>
+                            <td class="table-light">{{o.rendimiento|floatformat:2}}</td>                            
+                            <td class="table-light">{{o.municipio}}</td>                            
+                        </tr>   
+                    {% endfor %}            
+                </tbody>
+            </table>
+            <p>5 primeros resultados de {{cantidad}}</p>
+            <br/>
+            <hr/>
+    {% endif %}        
+    {% if no_data %}
+        <div class="alert alert-danger" role="alert">
+            {{no_data}}
+        </div>      
+    {% endif %}
+
+{% endblock content %}
+

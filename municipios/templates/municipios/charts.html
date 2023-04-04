@@ -1,0 +1,319 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}Gráficos Cultivos{% endblock title %}
+{% block styles %}
+<link rel="stylesheet" href="{% static 'municipios/style.css' %}">
+{% endblock styles %}
+{% block scripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js"></script>
+
+<script>
+    function getRandomColor(a) {
+        var r = Math.floor(Math.random() * 255);
+        var g = Math.floor(Math.random() * 255);
+        var b = Math.floor(Math.random() * 255);
+        return "rgba(" + r + "," + g + "," + b + ", " + a + ")";
+    }
+    
+
+    $(document).ready(function(){
+        const ctx2 = document.getElementById('produccionLine').getContext('2d');    
+        const ctx = document.getElementById('areaLine').getContext('2d');    
+        const ctx3 = document.getElementById('produccionBar').getContext('2d');    
+        const ctx4 = document.getElementById('produccionTotalesBar').getContext('2d');    
+        const ctx5 = document.getElementById('rendimientoLine').getContext('2d');    
+        
+        const areaLine = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: [{% for item in qs %}'{{item.period}}',{% endfor %}],
+                datasets: [{
+                    label: 'Area Cosechada (Ha)',
+                    data: [{% for item in qs %}'{{item.area_cosechada}}',{% endfor %}],                                        
+                    order:1,
+                    backgroundColor:'rgba(73, 160, 236, 0.15)',
+                    borderColor:"rgba(186, 76, 213, 0.8)",
+                    lineTension: 0,     
+                    //borderDash: [4, 4],
+                    fill:true,     
+
+                },{
+                    label: 'Area Sembrada (Ha)',
+                    data: [{% for item in qs %}'{{item.area_sembrada}}',{% endfor %}],                    
+                    order:0,
+                    type:'line',
+                    backgroundColor:"rgba(73, 160, 236, 0.5)",
+                    //borderColor:getRandomColor(0.7),
+                    lineTension: 0,          
+                    borderDash: [4, 4],
+                    fill:'-1',
+                    //fill: false,                   
+                },
+                
+                ]
+            },
+            options: {                          
+                scales: {
+                    y: {
+                        beginAtZero: true,                        
+                    }
+                },
+                title: {
+                    display: true,
+                    text: 'Area sembrada y cosechada',                    
+                },
+                subtitle: {
+                    display: true,
+                    text: 'Area sembrada y cosechada',                    
+                },
+            }
+        });
+        const produccionLine = new Chart(ctx2, {
+            type: 'line',
+            data: {
+                labels: [{% for item in qs %}'{{item.period}}',{% endfor %}],
+                datasets: [{
+                    label: 'Producción (T)',
+                    data: [{% for item in qs %}'{{item.produccion}}',{% endfor %}],
+                    backgroundColor: [getRandomColor(0.42)],
+                    borderColor: 'rgba(100, 99, 132, 1)',
+                    borderWidth: 1.5,                    
+                    hoverRadius:10,
+                    lineTension: 0,                        
+                    
+                    
+                }]
+            },
+            options: {        
+                legend: {                       
+                    display:false
+                },        
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                title: {
+                    display: true,
+                    text: 'Producción semestral (T)', 
+                },
+            }
+        });  
+        const produccionBar = new Chart(ctx3, {
+            type: 'bar',
+            data: {
+                labels: [{% for item in years %}'{{item}}',{% endfor %}],
+                datasets: [{
+                    label: 'Producción (T)',
+                    data: [{% for item in datosProdAnual %}'{{item}}',{% endfor %}],
+                    backgroundColor: 'rgba(38, 241, 82, 0.49)',
+                }]
+            },
+            options: {
+                legend: {                       
+                    display:false
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                title: {
+                    display: true,
+                    text: 'Producción anual (T)',                    
+                },
+                
+                
+            }
+        });  
+        const produccionTotalesBar = new Chart(ctx4, {
+            type: 'horizontalBar',
+            data: {
+                labels: [{% for item in municipiosTodos %}'{{item}}',{% endfor %}],
+                datasets: [{
+                    label: 'Producción (T)',
+                    data: [{% for item in datosTodos %}'{{item}}',{% endfor %}],
+                    backgroundColor: [{% for item in datosTodos %} getRandomColor(0.92) ,{% endfor %}],
+                }]
+            },
+            options: {      
+                indexAxis: 'y',
+                elements:{
+                    bar:{
+                        borderWidth:2,
+                    }
+                },     
+                legend:{
+                    display:false,
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                title: {
+                    display: true,
+                    text: ['Producción total en Cesar (T)','{{añoMinimo}}-{{añoMaximo}}'],                    
+                },             
+                
+                
+                
+            }
+        });  
+        const rendimientoLine = new Chart(ctx5, {
+            type: 'line',
+            data: {
+                labels: [{% for item in qs %}'{{item.period}}',{% endfor %}],
+                datasets: [{
+                    label: 'Rendimiento (T/Ha)',
+                    data: [{% for item in qs %}'{{item.rendimiento}}',{% endfor %}],                                        
+                    order:1,
+                    backgroundColor:getRandomColor(0.5),
+                    borderColor:"rgba(148, 14, 179, 0.5)",
+                    lineTension: 0,                         
+                    borderWidth: 1.5,                    
+                    hoverRadius:10,
+                }                
+                ]
+            },
+            options: {      
+                       
+                legend:{
+                    display:false
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                title: {
+                    display: true,
+                    text: 'Rendimiento (T/Ha)',                    
+                },
+            }
+        });
+
+    });
+
+</script>
+<script>
+    // Exportar a PDF
+    $(document).ready(function(){
+    $('#downloadPdf').click(function(event) {
+        // get size of report page
+        var reportPageHeight = $('#graphs').innerHeight();
+        var reportPageWidth = $('#graphs').innerWidth()-150;
+      
+        // create a new canvas object that we will populate with all other canvas objects
+        var pdfCanvas = $('<canvas />').attr({
+          id: "canvaspdf",
+          width: reportPageWidth+150,
+          height: reportPageHeight+190
+        });
+      
+        // keep track canvas position
+        var pdfctx = $(pdfCanvas)[0].getContext('2d');
+        var pdfctxX = 0;
+        var pdfctxY = 0;
+        var buffer = 100;
+      
+        // for each chart.js chart
+        $("canvas").each(function(index) {
+          // get the chart height/width
+          var canvasHeight = $(this).innerHeight();
+          var canvasWidth = $(this).innerWidth();
+      
+          // draw the chart into the new canvas
+          pdfctx.drawImage($(this)[0], pdfctxX, pdfctxY, canvasWidth+15, canvasHeight+15);
+          pdfctxX += canvasWidth + buffer;
+      
+          // our report page is in a grid pattern so replicate that in the new canvas
+          if (index % 2 === 1) {
+            pdfctxX = 0;
+            pdfctxY += canvasHeight + buffer;
+          }
+        });
+      
+        // create new pdf and add our new canvas as an image
+        var pdf = new jsPDF('p', 'pt', [reportPageWidth, reportPageHeight]);
+        
+        pdf.setFont("helvetica");
+        pdf.setFontType("bold");
+        pdf.setFontSize(18);
+        pdf.setTextColor(26, 82, 118);
+        pdf.text(reportPageWidth/2,50,'Reporte cultivos','center');
+        pdf.setTextColor(20, 90, 50);
+        pdf.setFontSize(16);
+        pdf.text(reportPageWidth/2,80,'Municipio: {{municipio|title}}','center');
+        pdf.text(reportPageWidth/2,105, '{{añoMinimo}} - {{añoMaximo}}','center');            
+        
+        pdf.addImage($(pdfCanvas)[0], 'PNG', 60, 170);
+      
+        // download the pdf
+        pdf.save("graficos cultivos: ".concat(String('{{municipio}}'),'.pdf'));
+      });
+    });
+</script>
+{% endblock scripts %}
+
+{% block content %}
+<br/>
+<h1 class="headers">Panel de Control: Cultivo de Maíz</h1>
+<hr/>
+
+<div class="bloque">    
+<form action="" id="dataForm" method="POST">
+    {% csrf_token %}
+    {{form|crispy}}
+    <button type="submit" class="btn btn-primary mt-3">Consultar</button>
+</form>
+</div>
+{% if qs %}
+
+<h1 class="headers text-center">{{municipio|title}} ( {{añoMinimo}} - {{añoMaximo}} ) </h1>
+
+<hr/>
+<br/>
+<!-- Cards -->
+<div class="cardBox2">
+    <div class="card">
+        <div class="cardName">Prom. Produccion Semestral (T) </div>           
+        <div class="numbers">{{produccionPromedio|floatformat:2}} </div>
+        
+    </div>      
+    <div class="card">
+        <div class="cardName">Prom. Rendimiento Semestral  (T/Ha) </div>           
+        <div class="numbers">{{rendimientoPromedio|floatformat:2}}</div>        
+    </div>      
+    <div class="card">        
+        <div class="cardName">Prom. Area Sembrada Semestral (Ha)</div>           
+        <div class="numbers">{{areaPromedio|floatformat:2}}</div>
+    </div>      
+</div>
+<div class="d-flex justify-content-end">
+    <a href="#" class="btn btn-outline-secondary btn-lg my-4" id="downloadPdf">
+        <i class="fa fa-download me-2" aria-hidden="true"></i>
+    Exportar como PDF</a>
+</div>
+
+<!-- Charts -->
+<div  id="graphs">
+    <div class="graphs">                                    
+        <div class="box"><canvas id="areaLine"></canvas></div>              
+        <div class="box"><canvas id="rendimientoLine"></canvas></div> 
+        <div class="box"><canvas id="produccionLine"></canvas></div>    
+        <div class="box"><canvas id="produccionBar"></canvas></div>         
+    </div>
+    <div class="box"><canvas id="produccionTotalesBar"></canvas></div>      
+
+</div>
+
+{% else %}
+<div class="alert alert-info mt-3" role="alert">
+    No hay datos para mostrar. Seleccione un rango de tiempo adecuado.
+</div>
+{% endif %}
+
+{% endblock content %}

@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block title %}Crear Usuario{% endblock title %}
+{% block styles %}
+  <link rel="stylesheet" href="{% static 'perfiles/style.css' %}">
+{% endblock styles %}
+
+{% block content %}
+<a href="{% url 'perfiles:list-user' %}" class="btn btn-dark mt-3"> <i class="fa fa-arrow-left me-2"></i>Volver</a>
+<h1 class="headers m-2">Registrar Usuario</h1>
+<form action="" method="POST" class="">
+    <div class="form-row">    
+      {% csrf_token %}
+      {{form|crispy}}
+    </div>
+<button type="submit" class="btn btn-success mt-3 mb-3">Crear Usuario</button>
+</form>
+{% endblock content %}

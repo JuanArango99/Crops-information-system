@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block title %}
+Usuarios
+{% endblock title %}
+{% block styles %}
+  <link rel="stylesheet" href="{% static 'perfiles/style.css' %}">
+{% endblock styles %}
+
+{% block content %}
+<a href="{% url 'perfiles:list-user' %}" class="btn btn-dark mt-3"> <i class="fa fa-arrow-left me-2"></i>Volver</a>
+<div class="mt-100">
+    <div class="row m-5">
+        <center>
+        <h1 class="headers">Usuario {{user}}</h1>
+        <ul class="list-group">
+            <li class="list-group-item"><strong>Correo: </strong>{{user.email}}</li>
+            <li class="list-group-item"><strong>¿Es Administrador?: </strong>{% if user.is_staff %}Si{% else %}No{% endif %}</li>
+            <li class="list-group-item"><strong>Nombres: </strong>  {{user.first_name}} </li>
+            <li class="list-group-item"><strong>Apellidos: </strong>{{user.last_name}}</li>
+            <li class="list-group-item"><strong>Fecha de Registro: </strong>{{user.date_joined}}</li>
+        </ul>
+        </center>   
+</div>
+</div>  
+
+{% endblock content %}

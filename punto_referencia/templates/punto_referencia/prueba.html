@@ -1,0 +1,5 @@
+
+<option value="">---------</option>
+{% for punto_referencia in punto_referencia %}
+    <option value="{{ punto_referencia.pk }}">{{ punto_referencia.name }}</option>
+{% endfor %}

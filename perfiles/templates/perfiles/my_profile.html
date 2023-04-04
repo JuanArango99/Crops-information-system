@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block title %}Mi Perfil{% endblock title %}
+{% block styles %}
+  <link rel="stylesheet" href="{% static 'perfiles/style.css' %}">
+{% endblock styles %}
+{% block content %}
+
+{% if confirm %}
+    <div class="alert alert-primary" role="alert">
+        Tu perfil ha sido actualizado
+    </div>
+{% endif %}
+  <div class="row">
+    <h1 class="headers m-3">Mi Perfil</h1>
+
+    <div class="col-md-4 border-right align-self-center ">
+      <div class="d-flex flex-column align-items-center text-center p-3 py-5">
+        <img  alt="mi-perfil" class="rounded-circle account-img" src="{{ user.perfil.foto.url }}">
+        <h2 class="account-heading">{{ user.username }}</h2>
+        <p class="text-secondary">{{ user.email }}</p>
+        <a class="btn btn-success " href="{% url 'perfiles:password-change'%}">Cambiar Contraseña</a>
+      </div>      
+    </div>  
+    
+    <div class="col-md-8">
+      <form method="POST"  enctype="multipart/form-data">
+        {% csrf_token %}
+      <div class="p-3 py-5">
+        <div class="row mt-2">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Nombre de Usuario</label>
+              {{u_form.username}}
+            </div>            
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Correo</label>
+              {{u_form.email}}
+            </div>
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Nombre(s)</label>
+              {{u_form.first_name}}
+            </div>            
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Apellido(s)</label>
+              {{u_form.last_name}}
+            </div>
+          </div>
+        </div>
+        <div class="row mt-2">
+            <div class="form-group">
+              <label>Foto</label>
+              {{p_form.foto}}
+            </div>            
+          </div>
+        </div>
+        <button type="submit" class="btn btn-success mt-3 mb-3">Actualizar</button>  
+      </div>
+      
+      </form>
+    </div>
+    
+</div>
+
+
+  
+  
+
+
+{% comment %} <div class="p-3 border border-2 ">  
+    <div class="d-flex">
+      <img  alt="mi-perfil" class="rounded-circle account-img" src="{{ user.perfil.foto.url }}">
+      <div class="media-body align-self-center">
+        <h2 class="account-heading">{{ user.username }}</h2>
+        <p class="text-secondary">{{ user.email }}</p>
+      </div>
+    </div>
+    <div class="d-grid gap-2 d-md-flex justify-content-md-center mt-5">
+      <a class="btn btn-success " href="{% url 'perfiles:password-change'%}">Cambiar Contraseña</a>
+    </div>
+    <form method="POST"  enctype="multipart/form-data">
+        {% csrf_token %}
+        <fieldset class="form-group">
+            <legend class="border-bottom my-5 headers">Info perfil</legend>
+            {{ u_form|crispy }}
+            {{ p_form|crispy }}
+        </fieldset>
+        <div class="form-group">
+            <button class="btn btn-outline-info" type="submit">Actualizar</button>
+        </div>
+    </form>
+</div> {% endcomment %}
+
+{% endblock content %}

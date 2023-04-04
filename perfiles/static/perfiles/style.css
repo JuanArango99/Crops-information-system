@@ -1,0 +1,145 @@
+.container{
+	padding-bottom: 1px !important;
+  min-height: 400px !important;
+}
+
+.link { 
+	color: #135c29c7; 
+	font-family: 'Open Sans', sans-serif; 
+	font-size: 24px; 
+	font-weight: 300; 
+	line-height: 32px; 
+	margin: 0 0 14px;  
+}
+.link:hover { 
+	color: #1E4028
+ }
+
+ .content-section {
+  background: #ffffff;
+  padding: 10px 20px;
+  border: 1px solid #dddddd;
+  border-radius: 3px;
+  margin-bottom: 20px;
+}
+
+.account-img {
+	height: 125px;
+	width: 125px;
+	margin-right: 20px;
+	margin-bottom: 16px;
+  }
+  
+.account-heading {
+	font-size: 2.5rem;
+}
+
+.profileForm{
+    margin-top: 40px !important;    
+    position: relative;
+    z-index: 1;
+    background: #FFFFFF;
+    max-width: 450px;
+    margin: 0 auto 40px;
+    padding: 45px !important;
+    text-align: center;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+
+.profileForm label{
+  padding: 20px;
+}
+
+.profileForm input{
+  font-family: "Roboto", sans-serif;
+  outline: 0;
+  background: #0be11b26;
+  width: 100%;
+  border: 0;
+  margin: 0 0 15px;
+  padding: 15px;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+.profileForm button{
+  font-family: "Roboto", sans-serif;
+  text-transform: uppercase;
+  outline: 0;
+  background: #4CAF50;
+  width: 100%;
+  border: 0;
+  padding: 15px;
+  color: #FFFFFF;
+  font-size: 14px;
+  -webkit-transition: all 0.3 ease;
+  transition: all 0.3 ease;
+  cursor: pointer;
+}
+
+.profileForm button:hover,.profileForm button:active,.profileForm button:focus {
+    background: #43A047;
+  }
+
+.exito{
+  text-align: center;
+}
+
+.exito h1 {
+  color: #88B04B;
+  font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
+  font-weight: 900;
+  font-size: 40px;
+  margin-bottom: 10px;
+}
+.exito p {
+  color: #404F5E;
+  font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
+  font-size:20px;
+  margin: 0;
+}
+.exito i {
+  color: #9ABC66;
+  font-size: 100px;
+  line-height: 200px;
+  margin-left:-15px;
+}
+.exito .card {
+  
+  text-align: center;
+  background: white;
+  padding: 60px;
+  border-radius: 4px;
+  box-shadow: 0 2px 3px #C8D0D8;
+  display: inline-block;
+  margin: 0 auto;
+}
+
+label{
+  margin-bottom: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  display: block;
+  letter-spacing: .1em;
+}
+
+#dataForm{
+  width: 40%;
+  border-radius: 5px;
+  background-color: #c4cdc429;  
+  padding: 20px;
+}
+
+.bloque{
+  margin: 20px;
+  padding: 15px;
+  text-align: -webkit-center;
+  
+}
+
+.bloque form div ul{
+  margin: 10px 0px;
+}
+.bloque form div {
+  margin-bottom: 25px;
+}

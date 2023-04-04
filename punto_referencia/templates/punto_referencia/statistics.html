@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}Estadísticas{% endblock title %}
+
+{% block scripts %}
+<script>
+    $(document).ready(function(){
+                
+        if ($("#id_punto_referencia").val() != '') {
+            $("#submitButton").prop("disabled",false);
+        }else{
+            $("#submitButton").prop("disabled",true);
+        }
+
+        $("#id_municipio").change(function () {
+            if ($(this).val() == '') {
+                $("#submitButton").prop("disabled",true);
+            }
+            if ($("#id_punto_referencia").val() == '') {
+                $("#submitButton").prop("disabled",true);
+            }
+            var url = $("#dataForm").attr("data-cities-url");  // get the url of the `load_cities` view
+            var municipioId = $(this).val();  // get the selected country ID from the HTML input
+            $.ajax({                       // initialize an AJAX request
+                    url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+                    data: {
+                    'municipio': municipioId       // add the country id to the GET parameters
+                    },
+                    success: function (data) {   // `data` is the return of the `load_cities` view function
+                        $("#submitButton").prop("disabled",true);
+                        $("#id_punto_referencia").html(data);  // replace the contents of the city input with the data that came from the server
+                    }
+                });
+            });
+            $("#id_punto_referencia").change(function () {                
+                if ($(this).val() != '') {
+                    $("#submitButton").prop("disabled",false);
+                }else{
+                    $("#submitButton").prop("disabled",true);
+                }
+            });
+
+
+        });
+
+</script>
+
+<script>
+    $(document).ready(function(){
+        const xValues = {{dataX | safe}};
+        const yValues = {{dataY | safe}};
+
+        var chartData = {
+            datasets: [{
+              label: '{{variableX}} vs {{variableY}}' ,
+              data: [],
+              backgroundColor: 'rgba(223,74,74, 0.4)',
+            }]
+          }
+          for (var i = 0; i < xValues.length; i++) {
+            chartData.datasets[0].data.push(
+              {
+                x: xValues[i], 
+                y: yValues[i]
+              }
+            )
+          }
+          var chartOptions = {            
+            responsive: true
+          }
+
+        const ctx = document.getElementById('myChart').getContext('2d');        
+        document.getElementById('myChart').width = 200;   
+
+        const myChart = new Chart(ctx, {
+            type: 'scatter',
+            data: chartData,
+            options: chartOptions
+        }); 
+     
+    });
+</script>
+{% endblock scripts %}
+
+{% block content %}
+<h1 class="headers">Estadísticas</h1>
+<hr/>
+<br/>
+<form method="POST" id="dataForm" data-cities-url="{% url 'punto_referencia:ajax_load_cities' %}" >
+    {% csrf_token %}    
+    {{punto_referenciaForm|crispy}}
+    {{datoForm|crispy}}
+    {{form |crispy}}
+    <button id="submitButton" type="submit" class="btn btn-primary mt-3">Search</button>
+</form>
+
+{% if qs %}
+<canvas id="myChart" width="100" height="100"></canvas>
+{% endif %}
+
+{% endblock content %}

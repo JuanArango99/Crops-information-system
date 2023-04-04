@@ -1,0 +1,143 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- favicon --> 
+    <link rel="shortcut icon" href="{% static 'favicon.ico' %}" />
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <!-- Font Awsome-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- semantic UI -->
+    <link rel="stylesheet" type='text/css' href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.14/semantic.min.css">
+    <!--Chart js-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" integrity="sha256-Uv9BNBucvCPipKQ2NS9wYpJmi8DTOEfTA/nH2aoJALw=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.css" integrity="sha256-aa0xaJgmK/X74WM224KMQeNQC2xYKwlAt08oZqjeF0E=" crossorigin="anonymous" />
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+    <script src="https://unpkg.com/dropzone@6.0.0-beta.1/dist/dropzone-min.js" defer></script>
+    <link href="https://unpkg.com/dropzone@6.0.0-beta.1/dist/dropzone.css" rel="stylesheet" type="text/css" />
+
+    <!-- Custom js & css -->
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+
+    <title>SIGAGRO | Inicio</title>
+  </head>
+
+<body>
+    {% include 'navbar.html' %}
+
+<div id="home" style="background: url('{% static 'crops.jpg' %}') no-repeat center center fixed;">
+    <div class="landing-text" >
+            <h1>SIGAGRO</h1>
+            <h3>Sistema de Información para la Gestión Agroclimática</h3>
+    </div>
+</div>
+
+<div class="padding">
+        <div class="row">
+            <div class="col-sm-6">
+                <img src="{% static 'climat.jpg' %}" class="img-fluid rounded">
+            </div>
+            <div class="col-sm-6 align-self-center text-center">
+                <h2> Estudie el comportamiento del clima</h2>
+                <p class="lead">Estudia la dinámica espaciotemporal del clima durante los últimos 40 años 
+                    en un lugar específico.
+                </p>
+                <p class="lead">
+                    Conozca y aproveche la variación de la oferta climática para optimizar el
+                    rendimiento de los cultivos. Consulte la información histórica del clima, genera gráficos interactivos, consulta reportes históricos
+                    y exportalos como CSV. 
+                </p>                
+            </div>
+        </div>
+</div>
+
+<div class="padding">
+        <div class="row">
+            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 text-end"> 
+                <h4>Gestione los datos</h4>
+                <p>  El prototipo de sistema de información provee un módulo para análisis estadísicos 
+                    mediante el uso de paneles de control (dashboard) interactivos.   </p>                
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12"> 
+                <img src="{% static 'manage.jpg' %}" class="img-fluid">
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 text-end"> 
+                <h4>Analice el comportamiento de las variables</h4>
+                <p> Estudie el comportamiento del rendimiento histórico que ha
+                    tenido la producción de los cultivos en su región.
+                </p>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12"> 
+                <img src="{% static 'estadistica.jpg' %}" class="img-fluid rounded">
+            </div>
+        </div>
+</div>
+
+<div id="fixed" style="background: url('{% static 'crops4.jpg' %}') no-repeat center center fixed;"></div>
+
+<div class="padding">    
+        <div class="row text-center">
+            <div class="col-sm-12 mb-4">                                
+                <h4> Información sobre los datos </h4> 
+                <p> Los datos que se presentan en este prototipo de sistema de información contienen la información relacionada al clima promedio
+                    diario y de los cultivos de forma semestral y anual en los municipios y lugares geográficos definidos para el estudio en las zonas norte y sur del departamento de Cesar.
+                </p>                    
+            </div>
+            <div class="col-sm-6">                                
+                <p>Los datos históricos relacionados al clima son proporcionados mediante la observación satelital por parte del centro de investigación de Langley de la NASA a través 
+                    de la división Earth Science de la agencia. 
+                    Los conjuntos de datos para cada zona se obtuvieron del portal web 
+                    cartográfico de fácil uso <a href="https://power.larc.nasa.gov/data-access-viewer/" class="link-primary" target="_blank">
+                    NASA POWER Data Acess Viewer.</a>                    
+                </p>
+                <p>Para consultar más información ingrese <a href="https://power.larc.nasa.gov/docs/methodology/" class="link-primary" target="_blank">aquí.</a></p>
+            </div>   
+            <div class="col-sm-6">                
+                <p>Los datos históricos de los cultivos son proporcionados por el Ministerio de Agricultura 
+                    y Desarrollo Rural de Colombia, y fueron obtenidos de <a href="https://www.datos.gov.co/d/2pnw-mmge" class="link-primary" target="_blank">Evaluaciones Agropecuarias Municipales EVA </a>,
+                    disponibles en <i>Datos Abiertos</i>.
+                </p>
+            </div>
+        </div>
+</div>
+
+<footer class="container-fluid text-center">
+    <div class="row">
+        <div class="col-sm-4">
+            <h3>Contáctenos</h3>    
+            <hr>
+            <h4>Teléfono: +573112813845</h4>
+            <h4>Correo: sigagros@gmail.com</h4>
+            <h4>Bucaramanga - Colombia</h4>
+            <h4>Cra. 27 # 9</h4>
+            
+        </div>
+        <div class="col-sm-5">
+            <h3>Redes Sociales</h3>
+            <br>
+            <a href="#" id="fa" class="fa fa-facebook"></a>
+            <a href="#" id="fa" class="fa fa-twitter"></a>
+            <a href="#" id="fa" class="fa fa-instagram"></a>
+            <a href="#" id="fa" class="fa fa-linkedin"></a>
+            <a href="#" id="fa" class="fa fa-youtube"></a>
+        </div>
+        <div class="col-sm-3">
+            <img src="{% static 'logo.png' %}" class="img-fluid" style="border-radius: 55%; height: 190px;">
+        </div>
+    </div>
+</footer>
+</body>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.min.js"></script>
+</html>
